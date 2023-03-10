@@ -12,6 +12,7 @@ import com.dbserver.desafiovotacao.domain.repository.VotoRepository;
 import com.dbserver.desafiovotacao.domain.service.VotoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +30,7 @@ import java.util.Optional;
 @RequestMapping("/v1/votos")
 public class VotoController {
 
+    public static final String ASSOCIADO_NAO_PODE_VOTAR_NA_MESMA_PAUTA = "Associado não pode votar na mesma pauta.";
     @Autowired
     private VotoService votoService;
     @Autowired
@@ -63,6 +65,8 @@ public class VotoController {
             return ResponseEntity.status(HttpStatus.CREATED).body(votoDto);
         } catch (AssociadoNaoEncontradoException | PautaNaoEncontradaException | PautaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ASSOCIADO_NAO_PODE_VOTAR_NA_MESMA_PAUTA);
         }
     }
 }
