@@ -5,6 +5,7 @@ import com.dbserver.desafiovotacao.api.v1.assembler.VotoDisassembler;
 import com.dbserver.desafiovotacao.api.v1.model.VotoDto;
 import com.dbserver.desafiovotacao.api.v1.model.input.VotoInput;
 import com.dbserver.desafiovotacao.domain.exceptions.AssociadoNaoEncontradoException;
+import com.dbserver.desafiovotacao.domain.exceptions.PautaException;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaNaoEncontradaException;
 import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.repository.VotoRepository;
@@ -60,7 +61,7 @@ public class VotoController {
             Voto voto = votoService.salvarVoto(votoInput);
             VotoDto votoDto = votoAssembler.toDtoObject(voto);
             return ResponseEntity.status(HttpStatus.CREATED).body(votoDto);
-        } catch (AssociadoNaoEncontradoException | PautaNaoEncontradaException e) {
+        } catch (AssociadoNaoEncontradoException | PautaNaoEncontradaException | PautaException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

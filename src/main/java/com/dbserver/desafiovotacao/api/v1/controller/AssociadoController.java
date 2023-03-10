@@ -7,6 +7,7 @@ import com.dbserver.desafiovotacao.api.v1.model.input.AssociadoInput;
 import com.dbserver.desafiovotacao.domain.model.Associado;
 import com.dbserver.desafiovotacao.domain.repository.AssociadoRepository;
 import com.dbserver.desafiovotacao.domain.service.AssociadoService;
+import com.dbserver.desafiovotacao.util.ValidarCPF;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ import java.util.Optional;
 public class AssociadoController {
 
     public static final String CPF_INVALIDO = "CPF inválido.";
+    public static final String ASSOCIADO_JA_CADASTRADO = "Associado com CPF: {0}, já cadastrado.";
     @Autowired
     private AssociadoService associadoService;
     @Autowired
@@ -62,7 +64,7 @@ public class AssociadoController {
 
         final String CPF = associadoInput.getCpf();
         try {
-            if (!associadoService.validarCPF(CPF)) {
+            if (!ValidarCPF.validar(CPF)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CPF_INVALIDO);
             }
             Associado associado = associadoDisassembler.toDomainObject(associadoInput);
@@ -71,7 +73,7 @@ public class AssociadoController {
             return ResponseEntity.status(HttpStatus.CREATED).body(associadoDto);
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(MessageFormat.format("Associado com CPF: {0}, já cadastrado.", CPF));
+                    .body(MessageFormat.format(ASSOCIADO_JA_CADASTRADO, CPF));
         }
 
     }
