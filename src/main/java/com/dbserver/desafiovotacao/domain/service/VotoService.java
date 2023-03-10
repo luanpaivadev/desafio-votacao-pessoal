@@ -1,7 +1,10 @@
 package com.dbserver.desafiovotacao.domain.service;
 
+import com.dbserver.desafiovotacao.api.v1.model.input.VotoInput;
 import com.dbserver.desafiovotacao.domain.exceptions.AssociadoNaoEncontradoException;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaNaoEncontradaException;
+import com.dbserver.desafiovotacao.domain.model.Associado;
+import com.dbserver.desafiovotacao.domain.model.Pauta;
 import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.repository.VotoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +22,20 @@ public class VotoService {
     private PautaService pautaService;
 
     @Transactional
-    public Voto save(final Voto voto) throws AssociadoNaoEncontradoException, PautaNaoEncontradaException {
-        associadoService.buscarAssociadoPeloId(voto.getAssociadoId());
-        pautaService.buscarPautaPeloId(voto.getPautaId());
-        return votoRepository.save(voto);
+    public Voto salvarVoto(final VotoInput votoInput) throws AssociadoNaoEncontradoException, PautaNaoEncontradaException {
+
+        Voto voto = new Voto();
+        Associado associado = associadoService.buscarAssociadoPeloId(votoInput.getAssociadoId());
+        Pauta pauta = pautaService.buscarPautaPeloId(votoInput.getPautaId());
+
+        voto.setAssociado(associado);
+        voto.setPauta(pauta);
+        voto.setVoto(votoInput.getVoto());
+        voto = votoRepository.save(voto);
+
+        pauta.getVotos().add(voto);
+        pautaService.save(pauta);
+
+        return voto;
     }
 }

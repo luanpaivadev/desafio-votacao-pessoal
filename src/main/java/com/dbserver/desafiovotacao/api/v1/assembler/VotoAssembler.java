@@ -1,6 +1,6 @@
 package com.dbserver.desafiovotacao.api.v1.assembler;
 
-import com.dbserver.desafiovotacao.api.v1.model.input.VotoDto;
+import com.dbserver.desafiovotacao.api.v1.model.VotoDto;
 import com.dbserver.desafiovotacao.domain.model.Voto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
