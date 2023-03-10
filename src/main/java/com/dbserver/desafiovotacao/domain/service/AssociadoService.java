@@ -17,6 +17,7 @@ public class AssociadoService {
 
     @Transactional
     public Associado save(final Associado associado) {
+        associado.setCpf(associado.getCpf().replaceAll("\\D", ""));
         return associadoRepository.save(associado);
     }
 

@@ -10,6 +10,7 @@ import com.dbserver.desafiovotacao.domain.service.AssociadoService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,11 +59,20 @@ public class AssociadoController {
 
     @PostMapping
     public ResponseEntity<?> salvarAssociado(@RequestBody @Valid final AssociadoInput associadoInput) {
-        if (!associadoService.validarCPF(associadoInput.getCpf())) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CPF_INVALIDO);
+
+        final String CPF = associadoInput.getCpf();
+        try {
+            if (!associadoService.validarCPF(CPF)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CPF_INVALIDO);
+            }
+            Associado associado = associadoDisassembler.toDomainObject(associadoInput);
+            associadoService.save(associado);
+            AssociadoDto associadoDto = associadoAssembler.toDtoObject(associado);
+            return ResponseEntity.status(HttpStatus.CREATED).body(associadoDto);
+        } catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(MessageFormat.format("Associado com CPF: {0}, já cadastrado.", CPF));
         }
-        Associado associado = associadoDisassembler.toDomainObject(associadoInput);
-        AssociadoDto associadoDto = associadoAssembler.toDtoObject(associadoService.save(associado));
-        return ResponseEntity.status(HttpStatus.CREATED).body(associadoDto);
+
     }
 }
