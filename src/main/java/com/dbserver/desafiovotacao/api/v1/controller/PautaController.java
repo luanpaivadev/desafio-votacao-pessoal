@@ -2,7 +2,7 @@ package com.dbserver.desafiovotacao.api.v1.controller;
 
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaAssembler;
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaDisassembler;
-import com.dbserver.desafiovotacao.api.v1.model.PautaDto;
+import com.dbserver.desafiovotacao.api.v1.model.dto.PautaDto;
 import com.dbserver.desafiovotacao.api.v1.model.ResultadoVotacao;
 import com.dbserver.desafiovotacao.api.v1.model.input.PautaInput;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaException;

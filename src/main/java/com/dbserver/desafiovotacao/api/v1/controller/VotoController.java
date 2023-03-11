@@ -1,7 +1,7 @@
 package com.dbserver.desafiovotacao.api.v1.controller;
 
 import com.dbserver.desafiovotacao.api.v1.assembler.VotoAssembler;
-import com.dbserver.desafiovotacao.api.v1.model.VotoDto;
+import com.dbserver.desafiovotacao.api.v1.model.dto.VotoDto;
 import com.dbserver.desafiovotacao.api.v1.model.input.VotoInput;
 import com.dbserver.desafiovotacao.domain.exceptions.AssociadoNaoEncontradoException;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaException;

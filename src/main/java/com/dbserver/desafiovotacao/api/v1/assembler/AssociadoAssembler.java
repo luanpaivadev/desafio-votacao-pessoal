@@ -1,18 +1,18 @@
 package com.dbserver.desafiovotacao.api.v1.assembler;
 
-import com.dbserver.desafiovotacao.api.v1.model.AssociadoDto;
+import com.dbserver.desafiovotacao.api.v1.model.dto.AssociadoDto;
 import com.dbserver.desafiovotacao.domain.model.Associado;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class AssociadoAssembler implements MapperToDtoObject<Associado, AssociadoDto> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public AssociadoDto toDtoObject(Associado associado) {

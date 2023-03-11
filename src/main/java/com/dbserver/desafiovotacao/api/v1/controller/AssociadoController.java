@@ -2,7 +2,7 @@ package com.dbserver.desafiovotacao.api.v1.controller;
 
 import com.dbserver.desafiovotacao.api.v1.assembler.AssociadoAssembler;
 import com.dbserver.desafiovotacao.api.v1.assembler.AssociadoDisassembler;
-import com.dbserver.desafiovotacao.api.v1.model.AssociadoDto;
+import com.dbserver.desafiovotacao.api.v1.model.dto.AssociadoDto;
 import com.dbserver.desafiovotacao.api.v1.model.input.AssociadoInput;
 import com.dbserver.desafiovotacao.domain.model.Associado;
 import com.dbserver.desafiovotacao.domain.repository.AssociadoRepository;

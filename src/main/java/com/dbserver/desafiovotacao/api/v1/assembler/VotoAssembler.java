@@ -1,18 +1,18 @@
 package com.dbserver.desafiovotacao.api.v1.assembler;
 
-import com.dbserver.desafiovotacao.api.v1.model.VotoDto;
+import com.dbserver.desafiovotacao.api.v1.model.dto.VotoDto;
 import com.dbserver.desafiovotacao.domain.model.Voto;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class VotoAssembler implements MapperToDtoObject<Voto, VotoDto> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public VotoDto toDtoObject(Voto voto) {

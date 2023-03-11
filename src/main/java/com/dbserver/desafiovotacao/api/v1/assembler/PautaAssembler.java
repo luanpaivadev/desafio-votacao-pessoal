@@ -1,18 +1,18 @@
 package com.dbserver.desafiovotacao.api.v1.assembler;
 
-import com.dbserver.desafiovotacao.api.v1.model.PautaDto;
+import com.dbserver.desafiovotacao.api.v1.model.dto.PautaDto;
 import com.dbserver.desafiovotacao.domain.model.Pauta;
+import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class PautaAssembler implements MapperToDtoObject<Pauta, PautaDto> {
 
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     @Override
     public PautaDto toDtoObject(Pauta pauta) {

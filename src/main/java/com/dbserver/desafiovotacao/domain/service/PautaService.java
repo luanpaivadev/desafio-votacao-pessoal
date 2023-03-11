@@ -40,6 +40,11 @@ public class PautaService {
     }
 
     @Transactional
+    public Pauta save(final Pauta pauta) {
+        return pautaRepository.save(pauta);
+    }
+
+    @Transactional
     public void fecharVotacao() {
         List<Pauta> pautas = pautaRepository.findBySituacao(Situacao.VOTACAO_ABERTA);
         pautas.forEach(pauta -> {
@@ -52,33 +57,27 @@ public class PautaService {
         });
     }
 
-    @Transactional
-    public Pauta save(final Pauta pauta) {
-        return pautaRepository.save(pauta);
-    }
-
-    @Transactional
     public Pauta abrirSessao(final Long pautaId, final LocalDateTime dataHoraFim) throws PautaNaoEncontradaException, PautaException {
 
         Pauta pauta = pautaRepository.findById(pautaId)
                 .orElseThrow(() -> new PautaNaoEncontradaException(format(NAO_FOI_POSSIVEL_LOCALIZAR_UMA_PAUTA_COM_ID, pautaId)));
 
         validarSituacaoPauta(pautaId, pauta);
-        validarDataHoraFim(pautaId, dataHoraFim, pauta);
-
         pauta.setSituacao(Situacao.VOTACAO_ABERTA);
         pauta.setDataHoraInicio(LocalDateTime.now());
+        validarDataHoraFim(pautaId, dataHoraFim, pauta);
         pauta.setDataHoraFim(Objects.nonNull(dataHoraFim) ? dataHoraFim : pauta.getDataHoraInicio().plusMinutes(1));
+
         return save(pauta);
     }
 
-    private static void validarDataHoraFim(Long pautaId, LocalDateTime dataHoraFim, Pauta pauta) throws PautaException {
-        if (Objects.nonNull(dataHoraFim) && dataHoraFim.isAfter(pauta.getDataHoraInicio())) {
+    private void validarDataHoraFim(Long pautaId, LocalDateTime dataHoraFim, Pauta pauta) throws PautaException {
+        if (Objects.nonNull(dataHoraFim) && dataHoraFim.isBefore(pauta.getDataHoraInicio())) {
             throw new PautaException(format(DATA_FINALIZACAO_INVALIDA, pautaId));
         }
     }
 
-    private static void validarSituacaoPauta(Long pautaId, Pauta pauta) throws PautaException {
+    private void validarSituacaoPauta(Long pautaId, Pauta pauta) throws PautaException {
         if (Objects.equals(pauta.getSituacao(), Situacao.VOTACAO_ABERTA)) {
             throw new PautaException(format(SESSAO_JA_ABERTA_PARA_VOTACAO, pautaId));
         }

@@ -1,4 +1,4 @@
-package com.dbserver.desafiovotacao.api.v1.model;
+package com.dbserver.desafiovotacao.api.v1.model.dto;
 
 import com.dbserver.desafiovotacao.domain.model.Associado;
 import lombok.Data;
