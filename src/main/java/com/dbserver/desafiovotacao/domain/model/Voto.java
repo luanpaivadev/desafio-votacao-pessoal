@@ -11,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Data
 @Entity
@@ -28,4 +29,12 @@ public class Voto {
     private String voto;
     @ManyToOne
     private Pauta pauta;
+
+    public boolean getVotoSim() {
+        return Objects.equals(voto, "Sim");
+    }
+
+    public boolean getVotoNao() {
+        return Objects.equals(voto, "Não");
+    }
 }

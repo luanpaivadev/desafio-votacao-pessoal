@@ -7,10 +7,10 @@ import com.dbserver.desafiovotacao.api.v1.model.input.AssociadoInput;
 import com.dbserver.desafiovotacao.domain.model.Associado;
 import com.dbserver.desafiovotacao.domain.repository.AssociadoRepository;
 import com.dbserver.desafiovotacao.domain.service.AssociadoService;
-import com.dbserver.desafiovotacao.util.ValidarCPF;
+import com.dbserver.desafiovotacao.util.ValidarCpf;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,20 +27,17 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/associados")
 public class AssociadoController {
 
     public static final String CPF_INVALIDO = "CPF inválido.";
     public static final String ASSOCIADO_JA_CADASTRADO = "Associado com CPF: {0}, já cadastrado.";
-    @Autowired
-    private AssociadoService associadoService;
-    @Autowired
-    private AssociadoRepository associadoRepository;
-    @Autowired
-    private AssociadoAssembler associadoAssembler;
-    @Autowired
-    private AssociadoDisassembler associadoDisassembler;
+    private final AssociadoService associadoService;
+    private final AssociadoRepository associadoRepository;
+    private final AssociadoAssembler associadoAssembler;
+    private final AssociadoDisassembler associadoDisassembler;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -60,11 +57,11 @@ public class AssociadoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> salvarAssociado(@RequestBody @Valid final AssociadoInput associadoInput) {
+    public ResponseEntity<Object> salvarAssociado(@RequestBody @Valid final AssociadoInput associadoInput) {
 
         final String CPF = associadoInput.getCpf();
         try {
-            if (!ValidarCPF.validar(CPF)) {
+            if (!ValidarCpf.validar(CPF)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CPF_INVALIDO);
             }
             Associado associado = associadoDisassembler.toDomainObject(associadoInput);
@@ -72,6 +69,7 @@ public class AssociadoController {
             AssociadoDto associadoDto = associadoAssembler.toDtoObject(associado);
             return ResponseEntity.status(HttpStatus.CREATED).body(associadoDto);
         } catch (DataIntegrityViolationException e) {
+            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(MessageFormat.format(ASSOCIADO_JA_CADASTRADO, CPF));
         }

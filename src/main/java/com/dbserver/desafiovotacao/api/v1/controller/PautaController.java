@@ -3,14 +3,17 @@ package com.dbserver.desafiovotacao.api.v1.controller;
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaAssembler;
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaDisassembler;
 import com.dbserver.desafiovotacao.api.v1.model.PautaDto;
+import com.dbserver.desafiovotacao.api.v1.model.ResultadoVotacao;
 import com.dbserver.desafiovotacao.api.v1.model.input.PautaInput;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaException;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaNaoEncontradaException;
 import com.dbserver.desafiovotacao.domain.model.Pauta;
-import com.dbserver.desafiovotacao.domain.repository.PautaRepository;
+import com.dbserver.desafiovotacao.domain.model.Situacao;
+import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.service.PautaService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,36 +28,48 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
+@Slf4j
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/pautas")
 public class PautaController {
 
-    @Autowired
-    private PautaService pautaService;
-    @Autowired
-    private PautaRepository pautaRepository;
-    @Autowired
-    private PautaAssembler pautaAssembler;
-    @Autowired
-    private PautaDisassembler pautaDisassembler;
+    private final PautaService pautaService;
+    private final PautaAssembler pautaAssembler;
+    private final PautaDisassembler pautaDisassembler;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<PautaDto> listarPautas() {
-        List<Pauta> pautas = pautaRepository.findAll();
+    public List<PautaDto> listarPautas(@RequestParam(required = false) final Situacao situacao) {
+        List<Pauta> pautas = pautaService.listarPautas(situacao);
         return pautaAssembler.toListDtoObject(pautas);
     }
 
     @GetMapping("/{pautaId}")
-    public ResponseEntity<PautaDto> buscarPautaPeloId(@PathVariable final Long pautaId) {
-        Optional<Pauta> pautaOptional = pautaRepository.findById(pautaId);
-        if (pautaOptional.isPresent()) {
-            PautaDto pautaDto = pautaAssembler.toDtoObject(pautaOptional.get());
+    public ResponseEntity<Object> buscarPautaPeloId(@PathVariable final Long pautaId) {
+        try {
+            Pauta pauta = pautaService.buscarPautaPeloId(pautaId);
+            PautaDto pautaDto = pautaAssembler.toDtoObject(pauta);
             return ResponseEntity.ok(pautaDto);
+        } catch (PautaNaoEncontradaException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/{pautaId}/resultado-votacao")
+    public ResponseEntity<Object> resultadoVotacao(@PathVariable final Long pautaId) {
+        try {
+            Pauta pauta = pautaService.buscarPautaPeloId(pautaId);
+            List<Voto> votos = pauta.getVotos();
+            long quantidadeVotosSim = votos.stream().filter(Voto::getVotoSim).count();
+            long quantidadeVotosNao = votos.stream().filter(Voto::getVotoNao).count();
+            return ResponseEntity.ok(new ResultadoVotacao(quantidadeVotosSim, quantidadeVotosNao));
+        } catch (PautaNaoEncontradaException e) {
+            log.error(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
     }
 
     @PostMapping
@@ -65,15 +80,18 @@ public class PautaController {
         return ResponseEntity.status(HttpStatus.CREATED).body(pautaDto);
     }
 
-    @PutMapping("/abrir-sessao")
-    public ResponseEntity<?> abrirSessao(@RequestParam final Long pautaId, @RequestParam(required = false) final LocalDateTime dataHoraFim) {
+    @PutMapping("/{pautaId}/abrir-sessao")
+    public ResponseEntity<Object> abrirSessao(@PathVariable final Long pautaId,
+                                              @RequestParam(required = false) final LocalDateTime dataHoraFim) {
         try {
             Pauta pauta = pautaService.abrirSessao(pautaId, dataHoraFim);
             PautaDto pautaDto = pautaAssembler.toDtoObject(pauta);
             return ResponseEntity.ok(pautaDto);
         } catch (PautaNaoEncontradaException e) {
+            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (PautaException e) {
+            log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
     }

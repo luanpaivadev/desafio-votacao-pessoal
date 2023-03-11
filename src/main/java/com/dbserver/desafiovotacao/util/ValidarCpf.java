@@ -1,6 +1,6 @@
 package com.dbserver.desafiovotacao.util;
 
-public class ValidarCPF {
+public class ValidarCpf {
 
     public static boolean validar(String cpf) {
 
