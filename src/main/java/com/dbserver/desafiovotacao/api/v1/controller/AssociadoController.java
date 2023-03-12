@@ -8,6 +8,7 @@ import com.dbserver.desafiovotacao.domain.model.Associado;
 import com.dbserver.desafiovotacao.domain.repository.AssociadoRepository;
 import com.dbserver.desafiovotacao.domain.service.AssociadoService;
 import com.dbserver.desafiovotacao.util.ValidarCpf;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +31,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/associados")
+@Tag(name = "AssociadoController")
 public class AssociadoController {
 
     public static final String CPF_INVALIDO = "CPF inválido.";

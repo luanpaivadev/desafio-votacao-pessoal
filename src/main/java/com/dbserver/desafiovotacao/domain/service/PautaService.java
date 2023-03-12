@@ -24,7 +24,7 @@ public class PautaService {
     public static final String NAO_FOI_POSSIVEL_LOCALIZAR_UMA_PAUTA_COM_ID = "Não foi possível localizar uma pauta com id: {0}.";
     public static final String SESSAO_JA_ABERTA_PARA_VOTACAO = "A sessão para a pauta com id: [{0}], já está aberta para votação.";
     public static final String SESSAO_FINALIZADA = "A sessão para a pauta com id: [{0}], já foi finalizada.";
-    public static final String DATA_FINALIZACAO_INVALIDA = "Data de finalização da sessão inválida.";
+    public static final String DATA_FINALIZACAO_INVALIDA = "Data/Hora de finalização da sessão inválida.";
     private final PautaRepository pautaRepository;
 
     public List<Pauta> listarPautas(final Situacao situacao) {
@@ -48,8 +48,8 @@ public class PautaService {
     public void fecharVotacao() {
         List<Pauta> pautas = pautaRepository.findBySituacao(Situacao.VOTACAO_ABERTA);
         pautas.forEach(pauta -> {
-            log.info("Iniciando processo de fechamento de votação para a pauta com id: [{}]", pauta.getId());
             if (pauta.getDataHoraFim().isBefore(LocalDateTime.now())) {
+                log.info("Iniciando processo de fechamento de votação para a pauta com id: [{}]", pauta.getId());
                 pauta.setSituacao(Situacao.VOTACAO_FECHADA);
                 save(pauta);
                 log.info("Votação em pauta fechada com sucesso.");

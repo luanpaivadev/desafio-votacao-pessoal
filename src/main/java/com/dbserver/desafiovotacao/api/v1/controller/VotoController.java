@@ -10,6 +10,7 @@ import com.dbserver.desafiovotacao.domain.exceptions.VotoInvalidoException;
 import com.dbserver.desafiovotacao.domain.exceptions.VotoNaoEncontradoException;
 import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.service.VotoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/votos")
+@Tag(name = "VotoController")
 public class VotoController {
 
     public static final String VOTO_SIM = "Sim";

@@ -11,6 +11,7 @@ import com.dbserver.desafiovotacao.domain.model.Pauta;
 import com.dbserver.desafiovotacao.domain.model.Situacao;
 import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.service.PautaService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,6 +34,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/pautas")
+@Tag(name = "PautaController")
 public class PautaController {
 
     private final PautaService pautaService;
