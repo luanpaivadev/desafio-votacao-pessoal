@@ -11,7 +11,6 @@ import com.dbserver.desafiovotacao.domain.model.Situacao;
 import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.repository.VotoRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,9 +54,7 @@ public class VotoService {
         voto.setPauta(pauta);
         voto.setVoto(votoInput.getVoto());
         voto = votoRepository.save(voto);
-
         pauta.getVotos().add(voto);
-        pautaService.save(pauta);
 
         return voto;
     }

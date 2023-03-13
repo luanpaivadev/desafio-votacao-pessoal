@@ -72,7 +72,7 @@ public class PautaServiceTest {
             pautaService.abrirSessao(pauta.getId(), dataHoraFim);
             fail();
         } catch (PautaException e) {
-            assertEquals(e.getMessage(), format(DATA_FINALIZACAO_INVALIDA, pauta.getId()));
+            assertEquals(format(DATA_FINALIZACAO_INVALIDA, pauta.getId()), e.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public class PautaServiceTest {
             pautaService.abrirSessao(pauta.getId(), dataHoraFim);
             fail();
         } catch (PautaException e) {
-            assertEquals(e.getMessage(), format(SESSAO_JA_ABERTA_PARA_VOTACAO, pauta.getId()));
+            assertEquals(format(SESSAO_JA_ABERTA_PARA_VOTACAO, pauta.getId()), e.getMessage());
         }
     }
 
@@ -109,12 +109,12 @@ public class PautaServiceTest {
             pautaService.abrirSessao(pauta.getId(), dataHoraFim);
             fail();
         } catch (PautaException e) {
-            assertEquals(e.getMessage(), format(SESSAO_FINALIZADA, pauta.getId()));
+            assertEquals(format(SESSAO_FINALIZADA, pauta.getId()), e.getMessage());
         }
     }
 
     @Test
-    void deveFecharUmaVotacaoComSucesso_QuandoADataHoraFimForMenorQueADataHoraAtual() throws PautaNaoEncontradaException {
+    void deveFecharUmaVotacaoComSucesso_QuandoADataHoraFimForMenorQueADataHoraAtual() {
 
         Pauta pauta = new Pauta();
         pauta.setId(1L);
@@ -139,7 +139,7 @@ public class PautaServiceTest {
             pautaService.buscarPautaPeloId(pautaId);
             fail();
         } catch (PautaNaoEncontradaException e) {
-            assertEquals(e.getMessage(), format(NAO_FOI_POSSIVEL_LOCALIZAR_UMA_PAUTA_COM_ID, pautaId));
+            assertEquals(format(NAO_FOI_POSSIVEL_LOCALIZAR_UMA_PAUTA_COM_ID, pautaId), e.getMessage());
         }
     }
 }
