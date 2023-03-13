@@ -7,7 +7,6 @@ import com.dbserver.desafiovotacao.api.v1.model.input.AssociadoInput;
 import com.dbserver.desafiovotacao.domain.model.Associado;
 import com.dbserver.desafiovotacao.domain.repository.AssociadoRepository;
 import com.dbserver.desafiovotacao.domain.service.AssociadoService;
-import com.dbserver.desafiovotacao.util.ValidarCpf;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +25,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
+
+import static com.dbserver.desafiovotacao.util.ValidarCpf.validar;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -63,7 +64,7 @@ public class AssociadoController {
 
         final String CPF = associadoInput.getCpf();
         try {
-            if (!ValidarCpf.validar(CPF)) {
+            if (!validar(CPF)) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(CPF_INVALIDO);
             }
             Associado associado = associadoDisassembler.toDomainObject(associadoInput);
