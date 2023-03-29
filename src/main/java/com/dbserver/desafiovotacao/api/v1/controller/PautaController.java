@@ -2,8 +2,8 @@ package com.dbserver.desafiovotacao.api.v1.controller;
 
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaAssembler;
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaDisassembler;
-import com.dbserver.desafiovotacao.api.v1.model.dto.PautaDto;
 import com.dbserver.desafiovotacao.api.v1.model.ResultadoVotacao;
+import com.dbserver.desafiovotacao.api.v1.model.dto.PautaDto;
 import com.dbserver.desafiovotacao.api.v1.model.input.PautaInput;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaException;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaNaoEncontradaException;
@@ -63,11 +63,7 @@ public class PautaController {
     @GetMapping("/{pautaId}/resultado-votacao")
     public ResponseEntity<Object> resultadoVotacao(@PathVariable final Long pautaId) {
         try {
-            Pauta pauta = pautaService.buscarPautaPeloId(pautaId);
-            List<Voto> votos = pauta.getVotos();
-            long quantidadeVotosSim = votos.stream().filter(Voto::getVotoSim).count();
-            long quantidadeVotosNao = votos.stream().filter(Voto::getVotoNao).count();
-            return ResponseEntity.ok(new ResultadoVotacao(quantidadeVotosSim, quantidadeVotosNao));
+            return ResponseEntity.ok(pautaService.resultadoVotacao(pautaId));
         } catch (PautaNaoEncontradaException e) {
             log.error(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());

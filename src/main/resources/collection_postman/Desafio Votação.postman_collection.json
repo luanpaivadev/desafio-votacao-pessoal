@@ -131,7 +131,7 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "{{local}}/v1/pautas/:pautaId/abrir-sessao?dataHoraFim=2023-03-11T19:00",
+									"raw": "{{local}}/v1/pautas/:pautaId/abrir-sessao?dataHoraFim=2023-03-13T11:40",
 									"host": [
 										"{{local}}"
 									],
@@ -144,7 +144,7 @@
 									"query": [
 										{
 											"key": "dataHoraFim",
-											"value": "2023-03-11T19:00",
+											"value": "2023-03-13T11:40",
 											"description": "Opcional (Default = 1 min) \n\nPassar dataHoraFim no formato yyyy-MM-ddTHH:mm\n\nExemplo: 2023-03-01T12:00"
 										}
 									],
@@ -192,14 +192,14 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{local}}/v1/votos/3",
+									"raw": "{{local}}/v1/votos/1",
 									"host": [
 										"{{local}}"
 									],
 									"path": [
 										"v1",
 										"votos",
-										"3"
+										"1"
 									]
 								}
 							},
