@@ -1,7 +1,8 @@
 package com.dbserver.desafiovotacao.api.v1.model.input;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+
+import javax.validation.constraints.NotBlank;
 
 @Data
 public class PautaInput {

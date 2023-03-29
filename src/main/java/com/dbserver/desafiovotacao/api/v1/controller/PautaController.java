@@ -2,17 +2,14 @@ package com.dbserver.desafiovotacao.api.v1.controller;
 
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaAssembler;
 import com.dbserver.desafiovotacao.api.v1.assembler.PautaDisassembler;
-import com.dbserver.desafiovotacao.api.v1.model.ResultadoVotacao;
 import com.dbserver.desafiovotacao.api.v1.model.dto.PautaDto;
 import com.dbserver.desafiovotacao.api.v1.model.input.PautaInput;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaException;
 import com.dbserver.desafiovotacao.domain.exceptions.PautaNaoEncontradaException;
 import com.dbserver.desafiovotacao.domain.model.Pauta;
 import com.dbserver.desafiovotacao.domain.model.Situacao;
-import com.dbserver.desafiovotacao.domain.model.Voto;
 import com.dbserver.desafiovotacao.domain.service.PautaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 
