@@ -7,7 +7,7 @@ import com.dbserver.desafiovotacao.api.v1.model.input.AssociadoInput;
 import com.dbserver.desafiovotacao.domain.model.Associado;
 import com.dbserver.desafiovotacao.domain.repository.AssociadoRepository;
 import com.dbserver.desafiovotacao.domain.service.AssociadoService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+//import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -32,7 +32,7 @@ import static com.dbserver.desafiovotacao.util.ValidarCpf.validar;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/associados")
-@Tag(name = "AssociadoController")
+//@Tag(name = "AssociadoController")
 public class AssociadoController {
 
     public static final String CPF_INVALIDO = "CPF inválido.";
