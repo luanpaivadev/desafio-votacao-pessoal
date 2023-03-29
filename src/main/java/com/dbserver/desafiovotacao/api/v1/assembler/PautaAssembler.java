@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +22,6 @@ public class PautaAssembler implements MapperToDtoObject<Pauta, PautaDto> {
 
     @Override
     public List<PautaDto> toListDtoObject(List<Pauta> pautas) {
-        return pautas.stream().map(pauta -> modelMapper.map(pauta, PautaDto.class)).toList();
+        return pautas.stream().map(pauta -> modelMapper.map(pauta, PautaDto.class)).collect(Collectors.toList());
     }
 }

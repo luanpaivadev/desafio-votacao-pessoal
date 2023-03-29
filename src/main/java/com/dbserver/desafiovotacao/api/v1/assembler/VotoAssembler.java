@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +22,6 @@ public class VotoAssembler implements MapperToDtoObject<Voto, VotoDto> {
 
     @Override
     public List<VotoDto> toListDtoObject(List<Voto> votos) {
-        return votos.stream().map(voto -> modelMapper.map(voto, VotoDto.class)).toList();
+        return votos.stream().map(voto -> modelMapper.map(voto, VotoDto.class)).collect(Collectors.toList());
     }
 }

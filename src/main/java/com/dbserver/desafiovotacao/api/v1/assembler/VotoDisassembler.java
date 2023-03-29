@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +22,6 @@ public class VotoDisassembler implements MapperToDomainObject<VotoInput, Voto> {
 
     @Override
     public List<Voto> toListDomainObject(List<VotoInput> votoInputs) {
-        return votoInputs.stream().map(votoInput -> modelMapper.map(votoInput, Voto.class)).toList();
+        return votoInputs.stream().map(votoInput -> modelMapper.map(votoInput, Voto.class)).collect(Collectors.toList());
     }
 }

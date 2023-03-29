@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +22,6 @@ public class PautaDisassembler implements MapperToDomainObject<PautaInput, Pauta
 
     @Override
     public List<Pauta> toListDomainObject(List<PautaInput> pautaInputList) {
-        return pautaInputList.stream().map(pautaInput -> modelMapper.map(pautaInput, Pauta.class)).toList();
+        return pautaInputList.stream().map(pautaInput -> modelMapper.map(pautaInput, Pauta.class)).collect(Collectors.toList());
     }
 }

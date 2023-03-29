@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +22,6 @@ public class AssociadoDisassembler implements MapperToDomainObject<AssociadoInpu
 
     @Override
     public List<Associado> toListDomainObject(List<AssociadoInput> associadoInputs) {
-        return associadoInputs.stream().map(associadoInput -> modelMapper.map(associadoInput, Associado.class)).toList();
+        return associadoInputs.stream().map(associadoInput -> modelMapper.map(associadoInput, Associado.class)).collect(Collectors.toList());
     }
 }

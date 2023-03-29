@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -21,6 +22,6 @@ public class AssociadoAssembler implements MapperToDtoObject<Associado, Associad
 
     @Override
     public List<AssociadoDto> toListDtoObject(List<Associado> associados) {
-        return associados.stream().map(associado -> modelMapper.map(associado, AssociadoDto.class)).toList();
+        return associados.stream().map(associado -> modelMapper.map(associado, AssociadoDto.class)).collect(Collectors.toList());
     }
 }
