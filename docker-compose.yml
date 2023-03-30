@@ -27,16 +27,38 @@ services:
     networks:
       - desafio-votacao-network
 
-  desafiovotacao:
-      image: desafio-votacao:latest
+  desafio-votacao:
+      image: desafio-votacao
+      command: [
+        "/wait-for-it.sh",
+        "-t",
+        "15",
+        "postgre-db-dev:5432",
+        "--",
+        "/wait-for-it.sh",
+        "-t",
+        "15",
+        "postgre-db-test:5433",
+        "--",
+        "java",
+        "-jar",
+        "api.jar"]
       environment:
         SERVER_PORT: 8080
         DB_HOST_DEV: postgre-db-dev
         DB_HOST_TEST: postgre-db-test
-      ports:
-        - "8081:8080"
       networks:
         - desafio-votacao-network
       depends_on:
         - postgre-db-dev
         - postgre-db-test
+
+  desafio-votacao-proxy:
+    build: ./nginx
+    image: desafio-votacao-proxy
+    ports:
+      - "80:80"
+    networks:
+      - desafio-votacao-network
+    depends_on:
+      - desafio-votacao
